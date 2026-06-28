@@ -27,12 +27,12 @@ SpecSentinel/
 ├── generator/              # Core framework
 │   ├── parser.py           # OpenAPI parsing
 │   ├── generator.py        # LLM test generation
-│   ├── executor.py         # Executes HTTP requests
+│   ├── test_executor.py    # Executes HTTP requests
 │   ├── logger.py           # JSON + Parquet logging
-│   └── ...
+│   └── test_generator      # Uses LLM to generate HTTP requests
 │
-├── target_api/             # Sample FastAPI application
-│
+├── target_api/             
+│   └── main.py             # Sample FastAPI application
 ├── tests/
 │   ├── conftest.py         # Starts FastAPI server automatically
 │   └── test_api.py         # Dynamic integration tests
