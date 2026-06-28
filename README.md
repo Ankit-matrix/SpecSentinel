@@ -1,2 +1,214 @@
-# SpecSentinel: An LLM-powered API Test Generator
-Automated API testing powered by AI. Generates, runs, and validates tests from OpenAPI specs, then intelligently triages failures.
+# SpecSentinel
+
+SpecSentinel is an AI-powered API testing framework that automatically generates and executes integration tests directly from an OpenAPI specification.
+
+Instead of maintaining a large collection of manually written API tests, SpecSentinel discovers the API contract, asks an LLM to generate meaningful test cases, executes those tests against a live FastAPI application, and produces structured reports for analysis.
+
+---
+
+## Features
+
+* Automatic OpenAPI specification discovery
+* LLM-generated API test cases
+* Dynamic pytest execution
+* Integration testing against a live FastAPI server
+* Happy-path and edge-case generation
+* JSON and Parquet test reports
+* Session-scoped execution for efficiency
+* CI-ready GitHub Actions workflow
+
+---
+
+## Project Structure
+
+```text
+SpecSentinel/
+│
+├── generator/              # Core framework
+│   ├── parser.py           # OpenAPI parsing
+│   ├── generator.py        # LLM test generation
+│   ├── executor.py         # Executes HTTP requests
+│   ├── logger.py           # JSON + Parquet logging
+│   └── ...
+│
+├── target_api/             # Sample FastAPI application
+│
+├── tests/
+│   ├── conftest.py         # Starts FastAPI server automatically
+│   └── test_api.py         # Dynamic integration tests
+│
+├── logs/                   # Generated execution reports
+├── requirements.txt
+└── README.md
+```
+
+---
+
+## Architecture
+
+```
+           OpenAPI Specification
+                    │
+                    ▼
+          OpenAPI Specification Parser
+                    │
+                    ▼
+         Endpoint + Schema Extraction
+                    │
+                    ▼
+        LLM Test Case Generation
+                    │
+                    ▼
+      Structured Test Case Objects
+                    │
+                    ▼
+         HTTP Request Execution
+                    │
+                    ▼
+        Response Validation Engine
+                    │
+                    ▼
+        JSON + Parquet Test Reports
+```
+
+---
+
+## Testing Pipeline
+
+When pytest starts:
+
+1. `conftest.py` launches the target FastAPI application on a random available port.
+2. The framework downloads `/openapi.json`.
+3. The OpenAPI specification is parsed into an internal representation.
+4. The LLM generates API test cases from the specification.
+5. The generated test cases are executed against the running application.
+6. Responses are validated.
+7. Execution summaries are written to JSON and Parquet files.
+8. The FastAPI server is automatically shut down after the session completes.
+
+Because the specification is fetched at runtime, the generated tests always reflect the current API contract.
+
+---
+
+## Test Strategy
+
+The framework currently performs three levels of validation.
+
+### 1. Pipeline Validation
+
+Ensures that the language model successfully generated at least one test case.
+
+```python
+assert len(test_cases) > 0
+```
+
+---
+
+### 2. Complete Test Suite
+
+Executes every generated test case.
+
+The framework records:
+
+* Passed tests
+* Failed tests
+* Response metadata
+* Execution summary
+
+A minimum pass rate of **50%** is required.
+
+This threshold is intentionally relaxed because the sample target API contains known defects for testing purposes.
+
+---
+
+### 3. Happy Path Validation
+
+Happy-path test cases are executed separately.
+
+The framework expects at least **80%** of happy-path scenarios to succeed.
+
+---
+
+## Running the Project
+
+Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+Run the complete test suite
+
+```bash
+pytest tests/
+```
+
+The FastAPI application is started automatically.
+
+No manual server startup is required.
+
+---
+
+## Reports
+
+Each execution generates:
+
+* JSON report
+* Apache Parquet report
+
+The reports include:
+
+* Run ID
+* API metadata
+* Total tests
+* Passed tests
+* Failed tests
+* Individual request/response information
+* Execution summary
+
+---
+
+## Technologies Used
+
+* Python
+* FastAPI
+* Pytest
+* Requests
+* Groq API
+* Pydantic
+* Pandas
+* PyArrow
+* Uvicorn
+
+---
+
+## Future Improvements
+
+Potential extensions include:
+
+* Property-based API testing
+* Authentication-aware test generation
+* Stateful workflow testing
+* Response schema validation
+* Automatic boundary-value generation
+* Parallel execution
+* Code coverage integration
+* HTML dashboards
+* Support for REST, GraphQL, and gRPC APIs
+* Mutation testing
+
+---
+
+## Why SpecSentinel?
+
+Traditional API tests require developers to manually create and maintain test cases whenever an API changes.
+
+SpecSentinel instead treats the OpenAPI specification as the single source of truth.
+
+Whenever the API evolves:
+
+* the latest specification is fetched,
+* fresh test cases are generated by the LLM,
+* and the API is immediately validated without manually updating test code.
+
+This significantly reduces maintenance effort while ensuring that testing remains synchronized with the API contract.
