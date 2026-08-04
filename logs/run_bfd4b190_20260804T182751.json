@@ -1,0 +1,630 @@
+{
+  "run_id": "bfd4b190",
+  "base_url": "http://127.0.0.1:39489",
+  "spec_title": "Blog API",
+  "spec_version": "1.0.0",
+  "total": 19,
+  "passed": 14,
+  "failed": 5,
+  "pass_rate": 73.7,
+  "results": [
+    {
+      "test_id": "list_posts_default",
+      "description": "List posts with default parameters",
+      "category": "happy_path",
+      "method": "GET",
+      "path": "/posts",
+      "resolved_url": "http://127.0.0.1:39489/posts",
+      "request_body": null,
+      "actual_status": 200,
+      "actual_response_body": [],
+      "response_time_ms": 13.79,
+      "expected_status": 200,
+      "expected_schema_keys": [
+        "id",
+        "title",
+        "body",
+        "author",
+        "created_at"
+      ],
+      "passed": true,
+      "failure_reasons": [],
+      "failure_detail": null,
+      "triage_label": null,
+      "triage_confidence": null,
+      "triage_rationale": null,
+      "manual_label": null
+    },
+    {
+      "test_id": "list_posts_limit_invalid",
+      "description": "List posts with invalid limit parameter",
+      "category": "boundary",
+      "method": "GET",
+      "path": "/posts",
+      "resolved_url": "http://127.0.0.1:39489/posts",
+      "request_body": null,
+      "actual_status": 422,
+      "actual_response_body": {
+        "detail": [
+          {
+            "type": "greater_than_equal",
+            "loc": [
+              "query",
+              "limit"
+            ],
+            "msg": "Input should be greater than or equal to 1",
+            "input": "0",
+            "ctx": {
+              "ge": 1
+            }
+          }
+        ]
+      },
+      "response_time_ms": 3.77,
+      "expected_status": 422,
+      "expected_schema_keys": [
+        "detail"
+      ],
+      "passed": true,
+      "failure_reasons": [],
+      "failure_detail": null,
+      "triage_label": null,
+      "triage_confidence": null,
+      "triage_rationale": null,
+      "manual_label": null
+    },
+    {
+      "test_id": "list_posts_limit_negative",
+      "description": "List posts with negative limit parameter",
+      "category": "error_path",
+      "method": "GET",
+      "path": "/posts",
+      "resolved_url": "http://127.0.0.1:39489/posts",
+      "request_body": null,
+      "actual_status": 422,
+      "actual_response_body": {
+        "detail": [
+          {
+            "type": "greater_than_equal",
+            "loc": [
+              "query",
+              "limit"
+            ],
+            "msg": "Input should be greater than or equal to 1",
+            "input": "-1",
+            "ctx": {
+              "ge": 1
+            }
+          }
+        ]
+      },
+      "response_time_ms": 4.0,
+      "expected_status": 422,
+      "expected_schema_keys": [
+        "detail"
+      ],
+      "passed": true,
+      "failure_reasons": [],
+      "failure_detail": null,
+      "triage_label": null,
+      "triage_confidence": null,
+      "triage_rationale": null,
+      "manual_label": null
+    },
+    {
+      "test_id": "create_post_default",
+      "description": "Create post with valid parameters",
+      "category": "happy_path",
+      "method": "POST",
+      "path": "/posts",
+      "resolved_url": "http://127.0.0.1:39489/posts",
+      "request_body": {
+        "title": "Test Title",
+        "body": "Test Body",
+        "author": "Test Author"
+      },
+      "actual_status": 201,
+      "actual_response_body": {
+        "id": "b630a171-85ec-416e-a5a8-eeb6474a957f",
+        "title": "Test Title",
+        "body": "Test Body",
+        "author": "Test Author",
+        "created_at": "2026-08-04T18:27:51.326642"
+      },
+      "response_time_ms": 14.1,
+      "expected_status": 201,
+      "expected_schema_keys": [
+        "id",
+        "title",
+        "body",
+        "author",
+        "created_at"
+      ],
+      "passed": true,
+      "failure_reasons": [],
+      "failure_detail": null,
+      "triage_label": null,
+      "triage_confidence": null,
+      "triage_rationale": null,
+      "manual_label": null
+    },
+    {
+      "test_id": "create_post_missing_title",
+      "description": "Create post with missing title parameter",
+      "category": "error_path",
+      "method": "POST",
+      "path": "/posts",
+      "resolved_url": "http://127.0.0.1:39489/posts",
+      "request_body": {
+        "body": "Test Body",
+        "author": "Test Author"
+      },
+      "actual_status": 422,
+      "actual_response_body": {
+        "detail": [
+          {
+            "type": "missing",
+            "loc": [
+              "body",
+              "title"
+            ],
+            "msg": "Field required",
+            "input": {
+              "body": "Test Body",
+              "author": "Test Author"
+            }
+          }
+        ]
+      },
+      "response_time_ms": 3.19,
+      "expected_status": 422,
+      "expected_schema_keys": [
+        "detail"
+      ],
+      "passed": true,
+      "failure_reasons": [],
+      "failure_detail": null,
+      "triage_label": null,
+      "triage_confidence": null,
+      "triage_rationale": null,
+      "manual_label": null
+    },
+    {
+      "test_id": "create_post_empty_title",
+      "description": "Create post with empty title parameter",
+      "category": "boundary",
+      "method": "POST",
+      "path": "/posts",
+      "resolved_url": "http://127.0.0.1:39489/posts",
+      "request_body": {
+        "title": "",
+        "body": "Test Body",
+        "author": "Test Author"
+      },
+      "actual_status": 422,
+      "actual_response_body": {
+        "detail": [
+          {
+            "type": "string_too_short",
+            "loc": [
+              "body",
+              "title"
+            ],
+            "msg": "String should have at least 1 character",
+            "input": "",
+            "ctx": {
+              "min_length": 1
+            }
+          }
+        ]
+      },
+      "response_time_ms": 3.35,
+      "expected_status": 422,
+      "expected_schema_keys": [
+        "detail"
+      ],
+      "passed": true,
+      "failure_reasons": [],
+      "failure_detail": null,
+      "triage_label": null,
+      "triage_confidence": null,
+      "triage_rationale": null,
+      "manual_label": null
+    },
+    {
+      "test_id": "get_post_valid_id",
+      "description": "Get post with valid id parameter",
+      "category": "happy_path",
+      "method": "GET",
+      "path": "/posts/{post_id}",
+      "resolved_url": "http://127.0.0.1:39489/posts/00000000-0000-0000-0000-000000000001",
+      "request_body": null,
+      "actual_status": 404,
+      "actual_response_body": {
+        "detail": "Post not found"
+      },
+      "response_time_ms": 10.71,
+      "expected_status": 200,
+      "expected_schema_keys": [
+        "id",
+        "title",
+        "body",
+        "author",
+        "created_at"
+      ],
+      "passed": false,
+      "failure_reasons": [
+        "status_mismatch",
+        "schema_key_missing",
+        "schema_key_missing",
+        "schema_key_missing",
+        "schema_key_missing",
+        "schema_key_missing"
+      ],
+      "failure_detail": "Expected status 200, got 404; Missing key 'id' in response body; Missing key 'title' in response body; Missing key 'body' in response body; Missing key 'author' in response body; Missing key 'created_at' in response body",
+      "triage_label": null,
+      "triage_confidence": null,
+      "triage_rationale": null,
+      "manual_label": null
+    },
+    {
+      "test_id": "get_post_invalid_id",
+      "description": "Get post with invalid id parameter",
+      "category": "error_path",
+      "method": "GET",
+      "path": "/posts/{post_id}",
+      "resolved_url": "http://127.0.0.1:39489/posts/00000000-0000-0000-0000-000000000002",
+      "request_body": null,
+      "actual_status": 404,
+      "actual_response_body": {
+        "detail": "Post not found"
+      },
+      "response_time_ms": 3.6,
+      "expected_status": 404,
+      "expected_schema_keys": [],
+      "passed": true,
+      "failure_reasons": [],
+      "failure_detail": null,
+      "triage_label": null,
+      "triage_confidence": null,
+      "triage_rationale": null,
+      "manual_label": null
+    },
+    {
+      "test_id": "update_post_valid_id",
+      "description": "Update post with valid id parameter",
+      "category": "happy_path",
+      "method": "PUT",
+      "path": "/posts/{post_id}",
+      "resolved_url": "http://127.0.0.1:39489/posts/00000000-0000-0000-0000-000000000001",
+      "request_body": {
+        "title": "Updated Title",
+        "body": "Updated Body",
+        "author": "Updated Author"
+      },
+      "actual_status": 404,
+      "actual_response_body": {
+        "detail": "Post not found"
+      },
+      "response_time_ms": 10.88,
+      "expected_status": 200,
+      "expected_schema_keys": [
+        "id",
+        "title",
+        "body",
+        "author",
+        "created_at"
+      ],
+      "passed": false,
+      "failure_reasons": [
+        "status_mismatch",
+        "schema_key_missing",
+        "schema_key_missing",
+        "schema_key_missing",
+        "schema_key_missing",
+        "schema_key_missing"
+      ],
+      "failure_detail": "Expected status 200, got 404; Missing key 'id' in response body; Missing key 'title' in response body; Missing key 'body' in response body; Missing key 'author' in response body; Missing key 'created_at' in response body",
+      "triage_label": null,
+      "triage_confidence": null,
+      "triage_rationale": null,
+      "manual_label": null
+    },
+    {
+      "test_id": "update_post_invalid_id",
+      "description": "Update post with invalid id parameter",
+      "category": "error_path",
+      "method": "PUT",
+      "path": "/posts/{post_id}",
+      "resolved_url": "http://127.0.0.1:39489/posts/00000000-0000-0000-0000-000000000002",
+      "request_body": {
+        "title": "Updated Title",
+        "body": "Updated Body",
+        "author": "Updated Author"
+      },
+      "actual_status": 404,
+      "actual_response_body": {
+        "detail": "Post not found"
+      },
+      "response_time_ms": 3.4,
+      "expected_status": 404,
+      "expected_schema_keys": [],
+      "passed": true,
+      "failure_reasons": [],
+      "failure_detail": null,
+      "triage_label": null,
+      "triage_confidence": null,
+      "triage_rationale": null,
+      "manual_label": null
+    },
+    {
+      "test_id": "delete_post_valid_id",
+      "description": "Delete post with valid id parameter",
+      "category": "happy_path",
+      "method": "DELETE",
+      "path": "/posts/{post_id}",
+      "resolved_url": "http://127.0.0.1:39489/posts/00000000-0000-0000-0000-000000000001",
+      "request_body": null,
+      "actual_status": 404,
+      "actual_response_body": {
+        "detail": "Post not found"
+      },
+      "response_time_ms": 10.16,
+      "expected_status": 200,
+      "expected_schema_keys": [],
+      "passed": false,
+      "failure_reasons": [
+        "status_mismatch"
+      ],
+      "failure_detail": "Expected status 200, got 404",
+      "triage_label": null,
+      "triage_confidence": null,
+      "triage_rationale": null,
+      "manual_label": null
+    },
+    {
+      "test_id": "delete_post_invalid_id",
+      "description": "Delete post with invalid id parameter",
+      "category": "error_path",
+      "method": "DELETE",
+      "path": "/posts/{post_id}",
+      "resolved_url": "http://127.0.0.1:39489/posts/00000000-0000-0000-0000-000000000002",
+      "request_body": null,
+      "actual_status": 404,
+      "actual_response_body": {
+        "detail": "Post not found"
+      },
+      "response_time_ms": 3.07,
+      "expected_status": 404,
+      "expected_schema_keys": [],
+      "passed": true,
+      "failure_reasons": [],
+      "failure_detail": null,
+      "triage_label": null,
+      "triage_confidence": null,
+      "triage_rationale": null,
+      "manual_label": null
+    },
+    {
+      "test_id": "create_comment_valid_params",
+      "description": "Create comment with valid parameters",
+      "category": "happy_path",
+      "method": "POST",
+      "path": "/comments",
+      "resolved_url": "http://127.0.0.1:39489/comments",
+      "request_body": {
+        "post_id": "00000000-0000-0000-0000-000000000001",
+        "body": "Test Body",
+        "commenter": "Test Commenter"
+      },
+      "actual_status": 201,
+      "actual_response_body": {
+        "id": "b50eda7f-8adc-4471-a833-e853592406e8",
+        "post_id": "00000000-0000-0000-0000-000000000001",
+        "body": "Test Body",
+        "commenter": "Test Commenter",
+        "created_at": "2026-08-04T18:27:51.388284"
+      },
+      "response_time_ms": 10.55,
+      "expected_status": 201,
+      "expected_schema_keys": [
+        "id",
+        "post_id",
+        "body",
+        "commenter",
+        "created_at"
+      ],
+      "passed": true,
+      "failure_reasons": [],
+      "failure_detail": null,
+      "triage_label": null,
+      "triage_confidence": null,
+      "triage_rationale": null,
+      "manual_label": null
+    },
+    {
+      "test_id": "create_comment_missing_post_id",
+      "description": "Create comment with missing post id parameter",
+      "category": "error_path",
+      "method": "POST",
+      "path": "/comments",
+      "resolved_url": "http://127.0.0.1:39489/comments",
+      "request_body": {
+        "body": "Test Body",
+        "commenter": "Test Commenter"
+      },
+      "actual_status": 422,
+      "actual_response_body": {
+        "detail": [
+          {
+            "type": "missing",
+            "loc": [
+              "body",
+              "post_id"
+            ],
+            "msg": "Field required",
+            "input": {
+              "body": "Test Body",
+              "commenter": "Test Commenter"
+            }
+          }
+        ]
+      },
+      "response_time_ms": 2.73,
+      "expected_status": 422,
+      "expected_schema_keys": [
+        "detail"
+      ],
+      "passed": true,
+      "failure_reasons": [],
+      "failure_detail": null,
+      "triage_label": null,
+      "triage_confidence": null,
+      "triage_rationale": null,
+      "manual_label": null
+    },
+    {
+      "test_id": "list_comments_for_post_valid_post_id",
+      "description": "List comments for post with valid post id parameter",
+      "category": "happy_path",
+      "method": "GET",
+      "path": "/posts/{post_id}/comments",
+      "resolved_url": "http://127.0.0.1:39489/posts/00000000-0000-0000-0000-000000000001/comments",
+      "request_body": null,
+      "actual_status": 404,
+      "actual_response_body": {
+        "detail": "Post not found"
+      },
+      "response_time_ms": 9.62,
+      "expected_status": 200,
+      "expected_schema_keys": [
+        "id",
+        "post_id",
+        "body",
+        "commenter",
+        "created_at"
+      ],
+      "passed": false,
+      "failure_reasons": [
+        "status_mismatch",
+        "schema_key_missing",
+        "schema_key_missing",
+        "schema_key_missing",
+        "schema_key_missing",
+        "schema_key_missing"
+      ],
+      "failure_detail": "Expected status 200, got 404; Missing key 'id' in response body; Missing key 'post_id' in response body; Missing key 'body' in response body; Missing key 'commenter' in response body; Missing key 'created_at' in response body",
+      "triage_label": null,
+      "triage_confidence": null,
+      "triage_rationale": null,
+      "manual_label": null
+    },
+    {
+      "test_id": "list_comments_for_post_invalid_post_id",
+      "description": "List comments for post with invalid post id parameter",
+      "category": "error_path",
+      "method": "GET",
+      "path": "/posts/{post_id}/comments",
+      "resolved_url": "http://127.0.0.1:39489/posts/00000000-0000-0000-0000-000000000002/comments",
+      "request_body": null,
+      "actual_status": 404,
+      "actual_response_body": {
+        "detail": "Post not found"
+      },
+      "response_time_ms": 2.85,
+      "expected_status": 404,
+      "expected_schema_keys": [],
+      "passed": true,
+      "failure_reasons": [],
+      "failure_detail": null,
+      "triage_label": null,
+      "triage_confidence": null,
+      "triage_rationale": null,
+      "manual_label": null
+    },
+    {
+      "test_id": "get_comment_valid_id",
+      "description": "Get comment with valid id parameter",
+      "category": "happy_path",
+      "method": "GET",
+      "path": "/comments/{comment_id}",
+      "resolved_url": "http://127.0.0.1:39489/comments/00000000-0000-0000-0000-000000000001",
+      "request_body": null,
+      "actual_status": 404,
+      "actual_response_body": {
+        "detail": "Comment not found"
+      },
+      "response_time_ms": 8.79,
+      "expected_status": 200,
+      "expected_schema_keys": [
+        "id",
+        "post_id",
+        "body",
+        "commenter",
+        "created_at"
+      ],
+      "passed": false,
+      "failure_reasons": [
+        "status_mismatch",
+        "schema_key_missing",
+        "schema_key_missing",
+        "schema_key_missing",
+        "schema_key_missing",
+        "schema_key_missing"
+      ],
+      "failure_detail": "Expected status 200, got 404; Missing key 'id' in response body; Missing key 'post_id' in response body; Missing key 'body' in response body; Missing key 'commenter' in response body; Missing key 'created_at' in response body",
+      "triage_label": null,
+      "triage_confidence": null,
+      "triage_rationale": null,
+      "manual_label": null
+    },
+    {
+      "test_id": "get_comment_invalid_id",
+      "description": "Get comment with invalid id parameter",
+      "category": "error_path",
+      "method": "GET",
+      "path": "/comments/{comment_id}",
+      "resolved_url": "http://127.0.0.1:39489/comments/00000000-0000-0000-0000-000000000002",
+      "request_body": null,
+      "actual_status": 404,
+      "actual_response_body": {
+        "detail": "Comment not found"
+      },
+      "response_time_ms": 3.58,
+      "expected_status": 404,
+      "expected_schema_keys": [],
+      "passed": true,
+      "failure_reasons": [],
+      "failure_detail": null,
+      "triage_label": null,
+      "triage_confidence": null,
+      "triage_rationale": null,
+      "manual_label": null
+    },
+    {
+      "test_id": "health_check",
+      "description": "Check health of the system",
+      "category": "happy_path",
+      "method": "GET",
+      "path": "/health",
+      "resolved_url": "http://127.0.0.1:39489/health",
+      "request_body": null,
+      "actual_status": 200,
+      "actual_response_body": {
+        "status": "ok",
+        "posts": 1,
+        "comments": 1
+      },
+      "response_time_ms": 2.92,
+      "expected_status": 200,
+      "expected_schema_keys": [],
+      "passed": true,
+      "failure_reasons": [],
+      "failure_detail": null,
+      "triage_label": null,
+      "triage_confidence": null,
+      "triage_rationale": null,
+      "manual_label": null
+    }
+  ]
+}
