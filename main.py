@@ -5,7 +5,7 @@ Usage:
     python main.py --spec openapi.json # load spec from file instead of /openapi.json
 """
 
-from __future__ import annotations
+from __future__ import annotations #Optional, can just remove type annotations entirely
 
 import argparse
 import json
@@ -159,7 +159,7 @@ def run_pipeline(base_url: str, spec_path: str | None = None) -> RunSummary:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="LLM-powered API test generator — Week 1 pipeline")
+    parser = argparse.ArgumentParser(description="LLM-powered API test generator")
     parser.add_argument("--url", help="Base URL of already-running target API")
     parser.add_argument("--spec", help="Path to OpenAPI spec JSON/YAML file")
     args = parser.parse_args()

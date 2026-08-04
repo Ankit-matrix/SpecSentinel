@@ -26,7 +26,7 @@ jobs:
 
       - name: Run API test pipeline
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
         run: pytest tests/ -v --tb=short
 
       - name: Upload run logs
